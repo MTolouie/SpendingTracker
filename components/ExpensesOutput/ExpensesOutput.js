@@ -34,6 +34,7 @@ const DUMMY_EXPENSES = [
     amount: 18.59,
     date: new Date("2022-02-18"),
   },
+  
 ];
 
 const ExpensesOutput = ({expenses,expensesPeriod}) => {
