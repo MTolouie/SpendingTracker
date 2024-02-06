@@ -64,7 +64,12 @@ export default function App() {
     <Fragment>
       <StatusBar style="light" />
       <NavigationContainer>
-        <stack.Navigator>
+        <stack.Navigator
+          screenOptions={{
+            headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+            headerTintColor: "white",
+          }}
+        >
           <stack.Screen
             name="ExpensesOverview"
             component={BottmTabNavigator}
@@ -72,7 +77,13 @@ export default function App() {
               headerShown: false,
             }}
           />
-          <stack.Screen name="ManageExpense" component={ManageExpense} />
+          <stack.Screen
+            name="ManageExpense"
+            component={ManageExpense}
+            options={{
+              presentation: "modal",
+            }}
+          />
         </stack.Navigator>
       </NavigationContainer>
     </Fragment>
