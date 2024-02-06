@@ -6,6 +6,7 @@ const renderExpenseItem = (itemData) => {
       amount={itemData.item.amount}
       date={itemData.item.date}
       description={itemData.item.description}
+      expenseId={itemData.item.id}
     />
   );
 };

@@ -1,5 +1,11 @@
 import { Text } from "react-native";
-const ManageExpense = () => {
-  return <Text>Manage Expense</Text>;
+const ManageExpense = ({route,navigation}) => {
+  const expenseId = route.params.expenseId;
+  
+  // if(expenseId){
+
+  // }
+
+  return <Text>Manage Expense {expenseId}</Text>;
 };
 export default ManageExpense;
