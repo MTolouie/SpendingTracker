@@ -9,6 +9,7 @@ import { Fragment } from "react";
 import AllExpenses from "./screens/AllExpenses";
 import { GlobalStyles } from "./constants/styles";
 import { Ionicons } from "@expo/vector-icons";
+import IconButton from "./components/UI/IconButton";
 export default function App() {
   const stack = createNativeStackNavigator();
   const bottom = createBottomTabNavigator();
@@ -16,31 +17,43 @@ export default function App() {
   const BottmTabNavigator = () => {
     return (
       <bottom.Navigator
-        screenOptions={{
+        screenOptions={({ navigation }) => ({
           headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
           headerTintColor: "white",
           tabBarStyle: { backgroundColor: GlobalStyles.colors.primary500 },
           tabBarActiveTintColor: GlobalStyles.colors.accent500,
-        }}
+          headerRight: ({ tintColor }) => (
+            <IconButton
+              icon="add"
+              size={24}
+              color={tintColor}
+              onPress={() => {
+                navigation.navigate("ManageExpense");
+              }}
+            />
+          ),
+        })}
       >
         <bottom.Screen
           name="AllExpenses"
           component={AllExpenses}
           options={{
-            tabBarIcon: ({ color, size }) => <Ionicons name="hourglass" size={size} color={color} />,
-            tabBarLabel:"All Expenses",
-            title:"All Expenses",
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="hourglass" size={size} color={color} />
+            ),
+            tabBarLabel: "All Expenses",
+            title: "All Expenses",
           }}
         />
         <bottom.Screen
           name="RecentExpenses"
           component={RecentExpenses}
           options={{
-            tabBarIcon: ({ color, size }) => 
+            tabBarIcon: ({ color, size }) => (
               <Ionicons name="calendar" size={size} color={color} />
-            ,
-            tabBarLabel:"Recent Expenses",
-            title:"Recent Expenses",
+            ),
+            tabBarLabel: "Recent Expenses",
+            title: "Recent Expenses",
           }}
         />
       </bottom.Navigator>
