@@ -40,14 +40,17 @@ const expensesSlice = createSlice({
     addExpense: (state, action) => {
       const id = new Date().toString() + Math.random().toString();
       action.payload.id = id;
-      state.expense.push(action.payload);
+      state.expenses.push(action.payload);
     },
     removeExpense: (state, action) => {
-      state.expenses = state.expenses.filter((expense)=> expense.id !== action.payload.id);
+      state.expenses = state.expenses.filter((expense) => {
+        expense.date = expense.date.toString();
+        return expense.id !== action.payload.id;
+      });
     },
     updateExpenses: (state, action) => {
       const updateableExpenseIndex = state.expenses.findIndex((expense) => {
-        expense.id === action.payload.id;
+        return expense.id === action.payload.id;
       });
 
       const updateableExpense = state.expenses[updateableExpenseIndex];
