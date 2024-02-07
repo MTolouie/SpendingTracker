@@ -37,27 +37,27 @@ export default function App() {
         })}
       >
         <bottom.Screen
-          name="AllExpenses"
-          component={AllExpenses}
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="hourglass" size={size} color={color} />
-            ),
-            tabBarLabel: "All Expenses",
-            title: "All Expenses",
-          }}
-        />
-        <bottom.Screen
           name="RecentExpenses"
           component={RecentExpenses}
           options={{
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="calendar" size={size} color={color} />
-            ),
-            tabBarLabel: "Recent Expenses",
-            title: "Recent Expenses",
-          }}
+              <Ionicons name="hourglass" size={size} color={color} />
+              ),
+              tabBarLabel: "Recent Expenses",
+              title: "Recent Expenses",
+            }}
         />
+            <bottom.Screen
+              name="AllExpenses"
+              component={AllExpenses}
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons name="calendar" size={size} color={color} />
+                ),
+                tabBarLabel: "All Expenses",
+                title: "All Expenses",
+              }}
+            />
       </bottom.Navigator>
     );
   };
