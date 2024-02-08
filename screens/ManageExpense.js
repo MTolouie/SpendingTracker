@@ -91,10 +91,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    marginTop:20
   },
   button: {
     minWidth: 120,
     marginHorizontal: 8,
+    flex:1
   },
   deleteContainer: {
     marginTop: 16,
