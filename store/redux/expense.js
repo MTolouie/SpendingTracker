@@ -40,7 +40,7 @@ const expensesSlice = createSlice({
     addExpense: (state, action) => {
       const id = new Date().toString() + Math.random().toString();
       action.payload.id = id;
-      state.expenses.push(action.payload);
+      state.expenses.unshift(action.payload);
     },
     removeExpense: (state, action) => {
       state.expenses = state.expenses.filter((expense) => {
