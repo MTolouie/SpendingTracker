@@ -11,7 +11,7 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         ignoredPaths: ["expense.expenses"],
-        ignoredActionPaths: ["payload.date"],
+        ignoredActionPaths: ["payload"],
         ignoredActionMatchers: [/.*Date.*/],
         ignoredPathsFilter: (action, basePath) => basePath.endsWith(".date"),
         // Custom function to ignore date field when serializing

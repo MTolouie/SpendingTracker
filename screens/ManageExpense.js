@@ -9,6 +9,7 @@ import {
   updateExpense,
 } from "../store/redux/expense";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
+import { storeExpense } from "../util/http";
 const ManageExpense = ({ route, navigation }) => {
   const expenseId = route.params?.expenseId;
   const isEditing = !!expenseId;
@@ -44,6 +45,7 @@ const ManageExpense = ({ route, navigation }) => {
       );
     } else {
       //add
+      storeExpense(expenseData);
       dispatch(addExpense(expenseData));
     }
 

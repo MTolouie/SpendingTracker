@@ -3,22 +3,47 @@ import Button from "../UI/Button";
 import Input from "./Input";
 import { useState } from "react";
 import { GlobalStyles } from "../../constants/styles";
+import { getFormattedDate } from "../../util/date";
 
 function ExpenseForm({ onCancel, onSubmit, submitButtonLabel, defaultValues }) {
+  // const [inputs, setInputs] = useState({
+  //   amount: {
+  //     value: defaultValues ? defaultValues.amount.toString() : "",
+  //     isValid: true,
+  //   },
+  //   date: {
+  //     value: defaultValues ? getFormattedDate(defaultValues.date) : "",
+  //     isValid: true,
+  //   },
+  //   description: {
+  //     value: defaultValues ? defaultValues.description : "",
+  //     isValid: true,
+  //   },
+  // });
   const [inputs, setInputs] = useState({
     amount: {
-      value: defaultValues ? defaultValues.amount.toString() : "",
+      value:
+        defaultValues && defaultValues.amount
+          ? defaultValues.amount.toString()
+          : "",
       isValid: true,
     },
     date: {
-      value: defaultValues ? defaultValues.date.toISOString().slice(0,10) : "",
+      value:
+        defaultValues && defaultValues.date
+          ? getFormattedDate(defaultValues.date)
+          : "",
       isValid: true,
     },
     description: {
-      value: defaultValues ? defaultValues.description : "",
+      value:
+        defaultValues && defaultValues.description
+          ? defaultValues.description
+          : "",
       isValid: true,
     },
   });
+
   function inputChangedHandler(inputIdentifier, enteredValue) {
     setInputs((currentInputs) => {
       return {
@@ -59,10 +84,9 @@ function ExpenseForm({ onCancel, onSubmit, submitButtonLabel, defaultValues }) {
   };
 
   const formIsInvalid =
-  !inputs.amount.isValid ||
-  !inputs.date.isValid ||
-  !inputs.description.isValid;
-
+    !inputs.amount.isValid ||
+    !inputs.date.isValid ||
+    !inputs.description.isValid;
 
   return (
     <View>
@@ -101,7 +125,11 @@ function ExpenseForm({ onCancel, onSubmit, submitButtonLabel, defaultValues }) {
         }}
         invalid={!inputs.description.isValid}
       />
-      {formIsInvalid && <Text style={styles.errorText}>Invalid Input Values - Please Check Your Data</Text>}
+      {formIsInvalid && (
+        <Text style={styles.errorText}>
+          Invalid Input Values - Please Check Your Data
+        </Text>
+      )}
       <View style={styles.buttons}>
         <Button style={styles.button} mode="flat" onPress={onCancel}>
           Cancel
