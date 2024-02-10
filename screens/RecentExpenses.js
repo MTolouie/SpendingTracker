@@ -21,7 +21,7 @@ const RecentExpenses = () => {
     const date7DaysAgo = getDateMinusDays(today, 7);
     return expense.date >= date7DaysAgo && expense.date <= today;
   });
-  console.log("recent Expenses :" + recentExpenses);
+  // console.log("recent Expenses :" + recentExpenses);
   return (
     <ExpensesOutput
       expenses={recentExpenses}

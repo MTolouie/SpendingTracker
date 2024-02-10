@@ -38,8 +38,6 @@ const expensesSlice = createSlice({
   },
   reducers: {
     addExpense: (state, action) => {
-      const id = new Date().toString() + Math.random().toString();
-      action.payload.id = id;
       state.expenses.unshift(action.payload);
     },
     removeExpense: (state, action) => {
@@ -63,7 +61,8 @@ const expensesSlice = createSlice({
       state.expenses = updatedExpenses;
     },
     setExpenses: (state, action) => {
-      state.expenses.push(...action.payload);
+      const inverted = action.payload.reverse();
+      state.expenses.push(...inverted);
       // console.log(state.expenses);
     },
   },

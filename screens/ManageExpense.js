@@ -9,7 +9,7 @@ import {
   updateExpense,
 } from "../store/redux/expense";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
-import { storeExpense } from "../util/http";
+import { storeExpense, modifyExpense, deleteExpense } from "../util/http";
 const ManageExpense = ({ route, navigation }) => {
   const expenseId = route.params?.expenseId;
   const isEditing = !!expenseId;
@@ -25,7 +25,8 @@ const ManageExpense = ({ route, navigation }) => {
     });
   }, [isEditing, navigation]);
 
-  function deleteExpenseHandler() {
+  async function deleteExpenseHandler() {
+    await deleteExpense(expenseId);
     dispatch(removeExpense({ id: expenseId }));
     navigation.goBack();
   }
@@ -34,7 +35,7 @@ const ManageExpense = ({ route, navigation }) => {
     navigation.goBack();
   }
 
-  function confirmHandler(expenseData) {
+  async function confirmHandler(expenseData) {
     if (isEditing) {
       //update
       dispatch(
@@ -43,10 +44,15 @@ const ManageExpense = ({ route, navigation }) => {
           ...expenseData,
         })
       );
+      await modifyExpense(expenseId, {
+        amount: expenseData.amount,
+        description: expenseData.description,
+        date: expenseData.date,
+      });
     } else {
       //add
-      storeExpense(expenseData);
-      dispatch(addExpense(expenseData));
+      const addedId = await storeExpense(expenseData);
+      dispatch(addExpense({ ...expenseData, id: addedId }));
     }
 
     navigation.goBack();
