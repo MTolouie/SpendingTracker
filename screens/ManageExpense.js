@@ -1,5 +1,5 @@
 import { Text, StyleSheet, View } from "react-native";
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import IconButton from "../components/UI/IconButton";
 import { GlobalStyles } from "../constants/styles";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,10 +10,13 @@ import {
 } from "../store/redux/expense";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 import { storeExpense, modifyExpense, deleteExpense } from "../util/http";
+import LoadingOverlay from "../components/UI/LoadingOverlay";
+import ErrorOverlay from "../components/UI/ErrorOverlay";
 const ManageExpense = ({ route, navigation }) => {
   const expenseId = route.params?.expenseId;
   const isEditing = !!expenseId;
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
   const existingExpense = useSelector((state) =>
     state.expense.expenses.find((expense) => expense.id === expenseId)
   );
@@ -26,9 +29,15 @@ const ManageExpense = ({ route, navigation }) => {
   }, [isEditing, navigation]);
 
   async function deleteExpenseHandler() {
-    await deleteExpense(expenseId);
-    dispatch(removeExpense({ id: expenseId }));
-    navigation.goBack();
+    setIsLoading(true);
+    try {
+      await deleteExpense(expenseId);
+      dispatch(removeExpense({ id: expenseId }));
+      navigation.goBack();
+    } catch (error) {
+      setError("Could Not Delete The Expense");
+      setIsLoading(false);
+    }
   }
 
   function cancelHandler() {
@@ -36,26 +45,42 @@ const ManageExpense = ({ route, navigation }) => {
   }
 
   async function confirmHandler(expenseData) {
-    if (isEditing) {
-      //update
-      dispatch(
-        updateExpense({
-          id: expenseId,
-          ...expenseData,
-        })
-      );
-      await modifyExpense(expenseId, {
-        amount: expenseData.amount,
-        description: expenseData.description,
-        date: expenseData.date,
-      });
-    } else {
-      //add
-      const addedId = await storeExpense(expenseData);
-      dispatch(addExpense({ ...expenseData, id: addedId }));
-    }
+    try {
+      if (isEditing) {
+        //update
+        setIsLoading(true);
+        await modifyExpense(expenseId, {
+          amount: expenseData.amount,
+          description: expenseData.description,
+          date: expenseData.date,
+        });
+        dispatch(
+          updateExpense({
+            id: expenseId,
+            ...expenseData,
+          })
+        );
+      } else {
+        //add
+        setIsLoading(true);
+        const addedId = await storeExpense(expenseData);
+        dispatch(addExpense({ ...expenseData, id: addedId }));
+        navigation.goBack();
+        setError("Could Not Add The Expense");
 
-    navigation.goBack();
+      }
+    } catch (error) {
+      setError("Could Not Save Data Please Try Again");
+      setIsLoading(false);
+    }
+  }
+
+  if (error && !isLoading) {
+    return <ErrorOverlay message={error} />;
+  }
+
+  if (isLoading) {
+    return <LoadingOverlay size={"large"} color={"white"} />;
   }
 
   return (
