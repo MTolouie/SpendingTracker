@@ -71,8 +71,8 @@ const ManageExpense = ({ route, navigation }) => {
       }
     } catch (error) {
       setError("Could Not Save Data Please Try Again");
-      setIsLoading(false);
     }
+    setIsLoading(false);
   }
 
   if (error && !isLoading) {
